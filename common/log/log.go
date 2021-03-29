@@ -1,6 +1,0 @@
-package log
-
-
-func init() {
-
-}

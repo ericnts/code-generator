@@ -1,6 +1,4 @@
-package main
-
-import "github.com/ericnts/code-generator/common/orm"
+package db
 
 type TableInfo struct {
 	Name    string
@@ -27,7 +25,7 @@ func FindTable(schemaName string) (result []TableInfo, err error) {
 					table_schema = ? 
 				ORDER BY
 					table_name`
-	err = orm.DB.Raw(sqlStr, schemaName).Scan(&result).Error
+	err = DB.Raw(sqlStr, schemaName).Scan(&result).Error
 	return
 }
 
@@ -47,6 +45,6 @@ func FindColumn(tableName string) (result []ColumnInfo, err error) {
 				ORDER BY
 					ordinal_position`
 
-	err = orm.DB.Raw(sqlStr, tableName).Scan(&result).Error
+	err = DB.Raw(sqlStr, tableName).Scan(&result).Error
 	return
 }
