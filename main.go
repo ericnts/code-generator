@@ -1,29 +1,30 @@
 package main
 
 import (
-	"fmt"
 	"github.com/ericnts/code-generator/db"
 	log "github.com/sirupsen/logrus"
-	"strings"
 )
 
 func main() {
+	if err := MkDir(); err != nil {
+		log.Error(err)
+	}
 	tables, err := db.FindTable("airobot_dev")
 	if err != nil {
 		return
 	}
 
-	var sb strings.Builder
 	for i, table := range tables {
+		if i > 5 {
+			break
+		}
 		columns, err := db.FindColumn(table.Name)
 		if err != nil {
 			continue
 		}
-		sb.WriteString(fmt.Sprintf("%v. %s(%s) [", i, table.Name, table.Comment))
-		for _, column := range columns {
-			sb.WriteString(column.Name + ",")
+		err = GeneratorEntity("test", table, columns)
+		if err != nil {
+			log.Error(err)
 		}
-		sb.WriteString(fmt.Sprintf("]\n"))
 	}
-	log.Info(sb.String())
 }

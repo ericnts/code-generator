@@ -1,5 +1,9 @@
 package db
 
+import (
+	"github.com/ericnts/code-generator/constant"
+)
+
 type TableInfo struct {
 	Name    string
 	Comment string
@@ -9,10 +13,28 @@ type ColumnInfo struct {
 	Name         string
 	DefaultValue string
 	Nullable     string
-	Type         string
+	Type         constant.ColumnType
 	MaxLength    string
 	ColumnKey    string
 	Comment      string
+}
+
+func (p *ColumnInfo) GetType() constant.FieldType {
+	switch p.Type {
+	case constant.CTChar, constant.CTVarchar, constant.CTTinyblob, constant.CTTinytext, constant.CTBlob,
+		constant.CTText, constant.CTMediumblob, constant.CTMediumtext, constant.CTLongblob, constant.CTLongtext:
+		return constant.FTString
+	case constant.CTTinyint, constant.CTSmallint, constant.CTMediumint, constant.CTInt, constant.CTInteger:
+		return constant.FTInt
+	case constant.CTBigint:
+		return constant.FTInt64
+	case constant.CTFloat, constant.CTDouble:
+		return constant.FTFloat
+	case constant.CTDate, constant.CTTime, constant.CTYear, constant.CTDatetime, constant.CTTimestamp:
+		return constant.FTTime
+	default:
+		return constant.FTString
+	}
 }
 
 func FindTable(schemaName string) (result []TableInfo, err error) {

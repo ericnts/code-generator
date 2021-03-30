@@ -1,0 +1,14 @@
+package {Package}
+
+import (
+{Import}
+)
+
+// {Comment}
+type {Entity} struct {
+{Field}
+}
+
+func (p *{Entity}) TableName() string {
+    return "{Table}"
+}
