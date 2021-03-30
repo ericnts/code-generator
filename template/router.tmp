@@ -1,0 +1,14 @@
+package {Package}
+
+import (
+{Import}
+)
+
+// {Comment}路由
+func Init{Object}(router *gin.RouterGroup) {
+	router.GET("", permission("{Permission}:view"), v1.Get{Object}Page)
+	router.GET(":id", permission("{Permission}:view"), v1.Get{Object})
+	router.POST("", permission("{Permission}:edit"), v1.Post{Object})
+	router.PUT(":id", permission("{Permission}:edit"), v1.Put{Object})
+	router.DELETE("", permission("{Permission}:delete"), v1.Del{Object})
+}

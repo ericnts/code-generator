@@ -1,6 +1,8 @@
 package db
 
 import (
+	"errors"
+	"github.com/ericnts/code-generator/config"
 	"github.com/ericnts/code-generator/constant"
 )
 
@@ -47,7 +49,24 @@ func FindTable(schemaName string) (result []TableInfo, err error) {
 					table_schema = ? 
 				ORDER BY
 					table_name`
-	err = DB.Raw(sqlStr, schemaName).Scan(&result).Error
+	err = DB.Raw(sqlStr, config.DBDatabase).Scan(&result).Error
+	return
+}
+
+func GetTableComment(tableName string) (result string, err error) {
+	sqlStr := `SELECT
+					table_comment 
+				FROM
+					information_schema.TABLES 
+				WHERE
+					table_schema = ? AND table_name = ?
+				ORDER BY
+					table_name`
+	tx := DB.Raw(sqlStr, config.DBDatabase, tableName).Scan(&result)
+	if tx.RowsAffected != 1 {
+		return "", errors.New("表不存在")
+	}
+	err = tx.Error
 	return
 }
 
@@ -59,14 +78,15 @@ func FindColumn(tableName string) (result []ColumnInfo, err error) {
 					data_type as type,
 					character_maximum_length as max_length,
 					column_key as column_key,
-					column_comment as common 
+					column_comment as comment 
 				FROM
 					information_schema.COLUMNS 
 				WHERE
 					table_name = ? 
+					AND table_schema = ?
 				ORDER BY
 					ordinal_position`
 
-	err = DB.Raw(sqlStr, tableName).Scan(&result).Error
+	err = DB.Raw(sqlStr, tableName, config.DBDatabase).Scan(&result).Error
 	return
 }

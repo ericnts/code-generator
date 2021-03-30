@@ -1,0 +1,107 @@
+package {Package}
+
+import (
+{Import}
+)
+
+// @Tags {Object}
+// @Summary 查询{Comment}列表
+// @Description 查询{Comment}接口
+// @Security ApiKeyAuth
+// @Param param query vo.{Object}QueryVO false "查询参数"
+// @Success 200 {object} common.Result{data=common.PageResult{list=vo.{Object}ListVO}}
+// @Router {Router} [get]
+func Get{Object}Page(c *gin.Context) {
+	var query vo.{Object}QueryVO
+	if err := c.Bind(&query); err != nil {
+		return
+	}
+	if result, err := service.Page{Object}(c, &query); err != nil {
+		common.Err(c, err)
+	} else {
+		common.Success(c, result)
+	}
+}
+
+// @Tags {Object}
+// @Summary 查询{Comment}信息
+// @Description 查询单个{Comment}详细新信息
+// @Security ApiKeyAuth
+// @Param id path string true "dictID"
+// @Success 200 {object} common.Result{data=vo.{Object}VO}
+// @Router {Router}/{id} [get]
+func Get{Object}(c *gin.Context) {
+	id := c.Param("id")
+	if stringx.IsBlank(id) {
+		common.Err(c, common.IDBlankErr)
+		return
+	}
+	if dictVO, err := service.Get{Object}(id); err != nil {
+		common.Err(c, err)
+	} else {
+		common.Success(c, dictVO)
+	}
+}
+
+// @Tags {Object}
+// @Summary 添加{Comment}
+// @Description 添加{Comment}
+// @Security ApiKeyAuth
+// @Param param body vo.{Object}CreateVO true "{Comment}信息"
+// @Success 200 {object} common.Result{data=string}
+// @Router {Router} [post]
+func Post{Object}(c *gin.Context) {
+	var dict vo.{Object}CreateVO
+	if err := c.Bind(&dict); err != nil {
+		return
+	}
+	if id, err := service.Create{Object}(&dict); err != nil {
+		common.Err(c, err)
+	} else {
+		common.Success(c, id)
+	}
+}
+
+// @Tags {Object}
+// @Summary 修改{Comment}
+// @Description 修改{Comment}，根据ID判断
+// @Security ApiKeyAuth
+// @Param id path string true "dictID"
+// @Param param body vo.{Object}ModifyVO false "{Comment}信息"
+// @Success 200 {object} common.Result{data=string}
+// @Router {Router}/{id} [put]
+func Put{Object}(c *gin.Context) {
+	dictID := c.Param("id")
+	if "" == dictID {
+		common.Err(c, common.IDBlankErr)
+		return
+	}
+	var modifyVO vo.{Object}ModifyVO
+	if err := c.Bind(&modifyVO); err != nil {
+		return
+	}
+	if id, err := service.Modify{Object}(dictID, &modifyVO); err != nil {
+		common.Err(c, err)
+	} else {
+		common.Success(c, id)
+	}
+}
+
+// @Tags {Object}
+// @Summary 删除{Comment}
+// @Description 删除{Comment}，多个{Comment}用逗号分隔
+// @Security ApiKeyAuth
+// @Param param query common.DelVO true "ids"
+// @Success 200 {object} common.Result{data=int}
+// @Router {Router} [delete]
+func Del{Object}(c *gin.Context) {
+	var param common.DelVO
+	if err := c.Bind(&param); err != nil {
+		return
+	}
+	if count, err := common.Del(&entity.{Object}{}, strings.Split(param.IDs, ",")...); err != nil {
+		common.Err(c, err)
+	} else {
+		common.Success(c, count)
+	}
+}

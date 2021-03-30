@@ -1,18 +1,24 @@
 package main
 
 type EntityRecord struct {
-	FieldIndex []int
+	index int64
+	count int
 }
 
-func (p *EntityRecord) AddField(field string, index int) {
+func (p *EntityRecord) CheckField(index int, field string) {
 	switch field {
 	case "id", "create_by", "create_date", "update_by", "update_date", "del_flag":
-		p.FieldIndex = append(p.FieldIndex, index)
+		p.index |= 1 << index
+		p.count++
 	default:
 		return
 	}
 }
 
-func (p *EntityRecord) HasBase() bool {
-	return len(p.FieldIndex) == 6
+func (p *EntityRecord) IsCommonField(index int) bool {
+	return p.index&(1<<index) > 0
+}
+
+func (p *EntityRecord) HasCommon() bool {
+	return p.count == 6
 }

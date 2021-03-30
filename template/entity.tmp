@@ -5,10 +5,10 @@ import (
 )
 
 // {Comment}
-type {Entity} struct {
+type {Object} struct {
 {Field}
 }
 
-func (p *{Entity}) TableName() string {
+func (p *{Object}) TableName() string {
     return "{Table}"
 }

@@ -1,0 +1,52 @@
+package {Package}
+
+import (
+{Import}
+)
+
+type {Object}QueryVO struct {
+	common.Query
+
+{Field}
+}
+
+type {Object}ListVO struct {
+{Field}
+}
+
+func New{Object}ListVO(p entity.{Object}) {Object}ListVO {
+	return {Object}ListVO{
+{Build}
+	}
+}
+
+type {Object}VO struct {
+	{Object}ListVO
+}
+
+func New{Object}VO(p entity.{Object}) *{Object}VO {
+	return &{Object}VO{
+		{Object}ListVO: New{Object}ListVO(p),
+	}
+}
+
+type {Object}ModifyVO struct {
+{Field}
+}
+
+func (p *{Object}ModifyVO) ToEntity(id string) *entity.{Object} {
+	return &entity.{Object}{
+		Entity: common.Entity{
+			ID: id,
+		},
+{Build}
+	}
+}
+
+type {Object}CreateVO struct {
+	{Object}ModifyVO
+}
+
+func (p *{Object}CreateVO) ToEntity() *entity.{Object} {
+	return p.{Object}ModifyVO.ToEntity("")
+}

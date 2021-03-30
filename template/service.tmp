@@ -1,0 +1,38 @@
+package {Package}
+
+import (
+	"{Project}/common"
+	"{Project}/entity"
+	"{Project}/vo"
+	"github.com/gin-gonic/gin"
+)
+
+func Page{Object}(c *gin.Context, query *vo.{Object}QueryVO) (*common.PageResult, error) {
+	var {Object}s []entity.{Object}
+	count, err := common.Page(&{Object}s, query)
+	if err != nil {
+		return nil, err
+	}
+	list := make([]vo.{Object}ListVO, len({Object}s))
+	for i, {Object} := range {Object}s {
+		list[i] = vo.New{Object}ListVO({Object})
+	}
+	result := common.NewPageResult(query.PageNO, query.PageSize, count, list)
+	return result, err
+}
+
+func Get{Object}(id string) (*vo.{Object}VO, error) {
+	var {Object} entity.{Object}
+	if err := common.Get(&{Object}, id); err != nil {
+		return nil, err
+	}
+	return vo.New{Object}VO({Object}), nil
+}
+
+func Create{Object}(createVO *vo.{Object}CreateVO) (string, error) {
+	return common.Create(createVO.ToEntity())
+}
+
+func Modify{Object}(id string, modifyVO *vo.{Object}ModifyVO) (string, error) {
+	return common.Updates(modifyVO.ToEntity(id))
+}
