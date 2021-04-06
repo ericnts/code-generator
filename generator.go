@@ -104,7 +104,7 @@ func (p *Generator) GenerateEntity() error {
 	str = strings.Replace(str, constant.Object, p.ObjectName, 2)
 	str = strings.Replace(str, constant.Field, fieldStr, 1)
 	str = strings.Replace(str, constant.Table, p.TableName, 1)
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.EntityDir, p.fileName), []byte(str), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.EntityDir, p.fileName, path.Base(constant.EntityDir)), []byte(str), 0644)
 	return nil
 }
 
@@ -134,14 +134,14 @@ func (p *Generator) GenerateVO() error {
 		return err
 	}
 	str := string(file)
-	str = strings.Replace(str, constant.Package, constant.VODir, 1)
+	str = strings.Replace(str, constant.Package, path.Base(constant.VODir), 1)
 	str = strings.Replace(str, constant.Import, importStr, 1)
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.Field, strings.Join(fields, ""))
 	str = strings.ReplaceAll(str, constant.ToVO, strings.Join(toVOs, ""))
 	str = strings.ReplaceAll(str, constant.ToEntity, strings.Join(toEntities, ""))
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.VODir, p.fileName), []byte(str), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.VODir, p.fileName, path.Base(constant.VODir)), []byte(str), 0644)
 	return err
 }
 
@@ -156,7 +156,7 @@ func (p *Generator) GenerateDAO() error {
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.LowerObject, p.lowerObjectName)
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.DaoDir, p.fileName), []byte(str), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.DaoDir, p.fileName, path.Base(constant.DaoDir)), []byte(str), 0644)
 	return err
 }
 
@@ -171,20 +171,18 @@ func (p *Generator) GenerateService() error {
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.LowerObject, p.lowerObjectName)
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.ServiceDir, p.fileName), []byte(str), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.ServiceDir, p.fileName, path.Base(constant.ServiceDir)), []byte(str), 0644)
 	return err
 }
 
 // 生成Controller
 func (p *Generator) GenerateController() error {
-	importStr := "\t\"{Project}/common\"\n\t\"{Project}/entity\"\n\t\"{Project}/service\"\n\t\"{Project}/vo\"\n\t\"github.com/gin-gonic/gin\"\n\t\"strings\""
 	file, err := ioutil.ReadFile(constant.ControllerTmp)
 	if err != nil {
 		return err
 	}
 	str := string(file)
 	str = strings.Replace(str, constant.Package, path.Base(constant.ControllerDir), 1)
-	str = strings.Replace(str, constant.Import, importStr, 1)
 	str = strings.ReplaceAll(str, constant.Comment, p.Comment)
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
@@ -193,7 +191,7 @@ func (p *Generator) GenerateController() error {
 		items[len(items)-1] = stringx.Plural(items[len(items)-1])
 	}
 	str = strings.ReplaceAll(str, constant.Router, path.Base(constant.ControllerDir)+"/"+strings.Join(items, "/"))
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.ControllerDir, p.fileName), []byte(str), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.ControllerDir, p.fileName, path.Base(constant.ControllerDir)), []byte(str), 0644)
 	return err
 }
 
@@ -211,6 +209,6 @@ func (p *Generator) GenerateRouter() error {
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.Permission, strings.ReplaceAll(p.fileName, "_", ":"))
-	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.RouterDir, p.fileName), []byte(str), 0644)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.RouterDir, p.fileName, path.Base(constant.RouterDir)), []byte(str), 0644)
 	return err
 }
