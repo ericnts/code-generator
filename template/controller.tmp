@@ -72,7 +72,7 @@ func Post{Object}(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Param id path string true "{Object}ID"
 // @Param param body vo.{Object}ModifyVO false "{Comment}信息"
-// @Success 200 {object} common.Result{data=string}
+// @Success 200 {object} common.Result{data=int64}
 // @Router {Router}/{id} [put]
 func Put{Object}(c *gin.Context) {
 	id := c.Param("id")
@@ -84,10 +84,10 @@ func Put{Object}(c *gin.Context) {
 	if err := c.Bind(&modifyVO); err != nil {
 		return
 	}
-	if id, err := service.{Object}.Modify(c, id, &modifyVO); err != nil {
+	if count, err := service.{Object}.Modify(c, id, &modifyVO); err != nil {
 		common.Err(c, err)
 	} else {
-		common.Success(c, id)
+		common.Success(c, count)
 	}
 }
 
@@ -96,7 +96,7 @@ func Put{Object}(c *gin.Context) {
 // @Description 删除{Comment}，多个{Comment}用逗号分隔
 // @Security ApiKeyAuth
 // @Param param query common.DelVO true "ids"
-// @Success 200 {object} common.Result{data=int}
+// @Success 200 {object} common.Result{data=int64}
 // @Router {Router} [delete]
 func Del{Object}Batch(c *gin.Context) {
 	var param common.DelVO
@@ -115,7 +115,7 @@ func Del{Object}Batch(c *gin.Context) {
 // @Description 删除{Comment}
 // @Security ApiKeyAuth
 // @Param id path string true "{Object}ID"
-// @Success 200 {object} common.Result{data=int}
+// @Success 200 {object} common.Result{data=int64}
 // @Router {Router}/{id} [delete]
 func Del{Object}(c *gin.Context) {
 	id := c.Param("id")
