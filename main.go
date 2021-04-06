@@ -9,7 +9,12 @@ func main() {
 		log.Error(err)
 		return
 	}
-	generator, err := NewGenerator("epshealth-airobot-admin", "sys_dict")
+	generate("epshealth-airobot-admin", "sys_dict")
+	generate("epshealth-airobot-admin", "sys_user")
+}
+
+func generate(project, table string) {
+	generator, err := NewGenerator(project, table)
 	if err != nil {
 		log.Error(err)
 		return
@@ -17,19 +22,21 @@ func main() {
 	if err := generator.GenerateEntity(); err != nil {
 		log.Error(err)
 	}
-	if err := generator.GenerateVO(); err != nil {
-		log.Error(err)
-	}
-	if err := generator.GenerateController(); err != nil {
-		log.Error(err)
-	}
-	if err := generator.GenerateRouter(); err != nil {
-		log.Error(err)
-	}
-	if err := generator.GenerateService(); err != nil {
-		log.Error(err)
-	}
-	if err := generator.GenerateDAO(); err != nil {
-		log.Error(err)
+	if generator.record.HasCommon() {
+		if err := generator.GenerateVO(); err != nil {
+			log.Error(err)
+		}
+		if err := generator.GenerateController(); err != nil {
+			log.Error(err)
+		}
+		if err := generator.GenerateRouter(); err != nil {
+			log.Error(err)
+		}
+		if err := generator.GenerateService(); err != nil {
+			log.Error(err)
+		}
+		if err := generator.GenerateDAO(); err != nil {
+			log.Error(err)
+		}
 	}
 }
