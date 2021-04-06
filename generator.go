@@ -12,15 +12,15 @@ import (
 )
 
 type Generator struct {
-	Project    string          //项目名称
-	ObjectName string          //对象名称
-	TableName  string          //表名
-	Comment    string          //描述信息
-	Columns    []db.ColumnInfo //数据列
-	fileName   string          //文件名
-	valueName  string          //变量名称
-	columnSize int             //字段长度
-	record     EntityRecord
+	Project         string          //项目名称
+	ObjectName      string          //对象名称
+	TableName       string          //表名
+	Comment         string          //描述信息
+	Columns         []db.ColumnInfo //数据列
+	fileName        string          //文件名
+	lowerObjectName string          //变量名称
+	columnSize      int             //字段长度
+	record          EntityRecord
 }
 
 func MkDir() error {
@@ -45,7 +45,7 @@ func NewGenerator(project, tableName string) (p *Generator, err error) {
 
 	p.ObjectName = stringx.CamelName(p.TableName)
 	p.fileName = stringx.UnderscoreName(p.ObjectName)
-	p.valueName = stringx.LowerCamelName(p.fileName)
+	p.lowerObjectName = stringx.LowerCamelName(p.fileName)
 	if comment, err := db.GetTableComment(p.TableName); err != nil {
 		return p, err
 	} else {
@@ -69,7 +69,6 @@ func (p *Generator) GenerateEntity() error {
 	fields := make([]string, p.columnSize+1)
 	var importStr string
 	if p.record.HasCommon() {
-		importStr += fmt.Sprintf("\t\"%s/common\"", p.Project)
 		fields[0] = "\tcommon.Entity\n\n"
 	}
 	for i, column := range p.Columns {
@@ -99,6 +98,7 @@ func (p *Generator) GenerateEntity() error {
 	}
 	str := string(file)
 	str = strings.Replace(str, constant.Package, path.Base(constant.EntityDir), 1)
+	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.Replace(str, constant.Import, importStr, 1)
 	str = strings.Replace(str, constant.Comment, p.Comment, 1)
 	str = strings.Replace(str, constant.Object, p.ObjectName, 2)
@@ -110,9 +110,10 @@ func (p *Generator) GenerateEntity() error {
 
 // 生成VO
 func (p *Generator) GenerateVO() error {
-	importStr := "\t\"{Project}/common\"\n\t\"{Project}/entity\""
+	var importStr string
 	fields := make([]string, p.columnSize)
-	builds := make([]string, p.columnSize)
+	toVOs := make([]string, p.columnSize)
+	toEntities := make([]string, p.columnSize)
 	var hasTime bool
 	for i, column := range p.Columns {
 		fieldType := column.GetType()
@@ -120,7 +121,10 @@ func (p *Generator) GenerateVO() error {
 			hasTime = true
 		}
 		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
-		builds[i] = fmt.Sprintf("\t\t%s:\t\tp.%s,\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
+		if !p.record.IsCommonField(i) {
+			toVOs[i] = fmt.Sprintf("\tv.%s = e.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
+			toEntities[i] = fmt.Sprintf("\t\t%s:\t\t\tp.%s,\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
+		}
 	}
 	if hasTime {
 		importStr += "\n\t\"time\""
@@ -135,14 +139,25 @@ func (p *Generator) GenerateVO() error {
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.Field, strings.Join(fields, ""))
-	str = strings.ReplaceAll(str, constant.Build, strings.Join(builds, ""))
+	str = strings.ReplaceAll(str, constant.ToVO, strings.Join(toVOs, ""))
+	str = strings.ReplaceAll(str, constant.ToEntity, strings.Join(toEntities, ""))
 	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.VODir, p.fileName), []byte(str), 0644)
 	return err
 }
 
 // 生成DAO
 func (p *Generator) GenerateDAO() error {
-	return nil
+	file, err := ioutil.ReadFile(constant.DaoTmp)
+	if err != nil {
+		return err
+	}
+	str := string(file)
+	str = strings.Replace(str, constant.Package, path.Base(constant.DaoDir), 1)
+	str = strings.ReplaceAll(str, constant.Project, p.Project)
+	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
+	str = strings.ReplaceAll(str, constant.LowerObject, p.lowerObjectName)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.DaoDir, p.fileName), []byte(str), 0644)
+	return err
 }
 
 // 生成Service
@@ -155,6 +170,7 @@ func (p *Generator) GenerateService() error {
 	str = strings.Replace(str, constant.Package, path.Base(constant.ServiceDir), 1)
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
+	str = strings.ReplaceAll(str, constant.LowerObject, p.lowerObjectName)
 	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s.go", constant.DistDir, constant.ServiceDir, p.fileName), []byte(str), 0644)
 	return err
 }

@@ -1,7 +1,8 @@
 package {Package}
 
 import (
-{Import}
+	"{Project}/common"
+	"{Project}/entity"{Import}
 )
 
 type {Object}QueryVO struct {
@@ -14,32 +15,37 @@ type {Object}ListVO struct {
 {Field}
 }
 
-func New{Object}ListVO(p entity.{Object}) {Object}ListVO {
-	return {Object}ListVO{
-{Build}
+func (v *{Object}ListVO) Load(inter common.EntityInter) {
+	e, ok := inter.(*entity.{Object})
+	if !ok {
+		return
 	}
+{ToVO}
 }
 
 type {Object}VO struct {
 	{Object}ListVO
 }
 
-func New{Object}VO(p entity.{Object}) *{Object}VO {
-	return &{Object}VO{
-		{Object}ListVO: New{Object}ListVO(p),
+func (v *{Object}VO) Load(inter common.EntityInter) {
+	e, ok := inter.(*entity.{Object})
+	if !ok {
+		return
 	}
+	v.{Object}ListVO = {Object}ListVO{}
+	v.{Object}ListVO.Load(e)
 }
 
 type {Object}ModifyVO struct {
 {Field}
 }
 
-func (p *{Object}ModifyVO) ToEntity(id string) *entity.{Object} {
+func (p *{Object}ModifyVO) ToEntity(id string) common.EntityInter {
 	return &entity.{Object}{
 		Entity: common.Entity{
 			ID: id,
 		},
-{Build}
+{ToEntity}
 	}
 }
 
@@ -47,6 +53,6 @@ type {Object}CreateVO struct {
 	{Object}ModifyVO
 }
 
-func (p *{Object}CreateVO) ToEntity() *entity.{Object} {
+func (p *{Object}CreateVO) ToEntity() common.EntityInter {
 	return p.{Object}ModifyVO.ToEntity("")
 }

@@ -1,6 +1,28 @@
 package db
 
-import "testing"
+import (
+	log "github.com/sirupsen/logrus"
+	"testing"
+)
+
+type Dict struct {
+	ID    string
+	Label string
+}
+
+func (P Dict) TableName() string {
+	return "sys_dict"
+}
+func TestNormal(t *testing.T) {
+	var dicts []Dict
+	tx:=DB
+	//tx.Select("id")
+	//tx.Order("type")
+	//tx.Limit(10)
+	tx = tx.Where("id=?", "asdf")
+	tx.Where("label like ?",0).Find(&dicts)
+	log.Info(dicts)
+}
 
 func TestGetTableComment(t *testing.T) {
 	type args struct {
@@ -18,7 +40,7 @@ func TestGetTableComment(t *testing.T) {
 				tableName: "test1",
 			},
 			wantResult: "",
-			wantErr: true,
+			wantErr:    true,
 		},
 		{
 			name: "case2",
@@ -26,7 +48,7 @@ func TestGetTableComment(t *testing.T) {
 				tableName: "test",
 			},
 			wantResult: "测试",
-			wantErr: false,
+			wantErr:    false,
 		},
 	}
 	for _, tt := range tests {

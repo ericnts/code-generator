@@ -20,4 +20,16 @@ func main() {
 	if err := generator.GenerateVO(); err != nil {
 		log.Error(err)
 	}
+	if err := generator.GenerateController(); err != nil {
+		log.Error(err)
+	}
+	if err := generator.GenerateRouter(); err != nil {
+		log.Error(err)
+	}
+	if err := generator.GenerateService(); err != nil {
+		log.Error(err)
+	}
+	if err := generator.GenerateDAO(); err != nil {
+		log.Error(err)
+	}
 }

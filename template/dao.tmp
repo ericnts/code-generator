@@ -1,0 +1,22 @@
+package {Package}
+
+import (
+	"{Project}/common"
+	"{Project}/entity"
+)
+
+var {Object} {Object}DAOInter = new{Object}Dao()
+
+func new{Object}Dao() *{Object}DAO {
+	{LowerObject}DAO := new({Object}DAO)
+	{LowerObject}DAO.Register(new(entity.{Object}))
+	return {LowerObject}DAO
+}
+
+type {Object}DAOInter interface {
+	common.DAOInter
+}
+
+type {Object}DAO struct {
+	common.DAO
+}

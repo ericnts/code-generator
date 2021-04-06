@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"net/url"
 )
 
@@ -22,6 +23,7 @@ func init() {
 	}
 	dialector := mysql.Open(u.String()[8:])
 	db, err := gorm.Open(dialector, &gorm.Config{
+		Logger:      &Logger{LogLevel: logger.Info},
 		PrepareStmt: true,
 	})
 	if err != nil {

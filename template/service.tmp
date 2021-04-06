@@ -2,37 +2,22 @@ package {Package}
 
 import (
 	"{Project}/common"
-	"{Project}/entity"
+	"{Project}/dao"
 	"{Project}/vo"
-	"github.com/gin-gonic/gin"
 )
 
-func Page{Object}(c *gin.Context, query *vo.{Object}QueryVO) (*common.PageResult, error) {
-	var {Object}s []entity.{Object}
-	count, err := common.Page(&{Object}s, query)
-	if err != nil {
-		return nil, err
-	}
-	list := make([]vo.{Object}ListVO, len({Object}s))
-	for i, {Object} := range {Object}s {
-		list[i] = vo.New{Object}ListVO({Object})
-	}
-	result := common.NewPageResult(query.PageNO, query.PageSize, count, list)
-	return result, err
+var {Object} {Object}ServerInter = new{Object}Service()
+
+func new{Object}Service() *{Object}Server {
+	{LowerObject}Service := new({Object}Server)
+	{LowerObject}Service.Register(dao.{Object}, new(vo.{Object}VO), new(vo.{Object}ListVO))
+	return {LowerObject}Service
 }
 
-func Get{Object}(id string) (*vo.{Object}VO, error) {
-	var {Object} entity.{Object}
-	if err := common.Get(&{Object}, id); err != nil {
-		return nil, err
-	}
-	return vo.New{Object}VO({Object}), nil
+type {Object}ServerInter interface {
+	common.ServiceInter
 }
 
-func Create{Object}(createVO *vo.{Object}CreateVO) (string, error) {
-	return common.Create(createVO.ToEntity())
-}
-
-func Modify{Object}(id string, modifyVO *vo.{Object}ModifyVO) (string, error) {
-	return common.Updates(modifyVO.ToEntity(id))
+type {Object}Server struct {
+	common.Service
 }

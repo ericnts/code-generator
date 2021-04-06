@@ -19,14 +19,16 @@ const (
 )
 
 const (
-	Package    = "{Package}"
-	Project    = "{Project}"
-	Import     = "{Import}"
-	Comment    = "{Comment}"
-	Object     = "{Object}"
-	Field      = "{Field}"
-	Table      = "{Table}"
-	Build      = "{Build}"
-	Router     = "{Router}"
-	Permission = "{Permission}"
+	Package     = "{Package}"
+	Project     = "{Project}"
+	Import      = "{Import}"
+	Comment     = "{Comment}"
+	Object      = "{Object}"
+	Field       = "{Field}"
+	Table       = "{Table}"
+	ToVO        = "{ToVO}"
+	ToEntity    = "{ToEntity}"
+	Router      = "{Router}"
+	Permission  = "{Permission}"
+	LowerObject = "{LowerObject}"
 )
