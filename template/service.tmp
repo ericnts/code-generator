@@ -6,7 +6,7 @@ import (
 	"{Project}/vo"
 )
 
-var {Object} I{Object}Server = &{Object}Server{
+var {Object} I{Object}Service = &{Object}Service{
 	Service: common.Service{
 		DAO:    dao.{Object},
         DetailVO: new(vo.{Object}Detail),
@@ -14,10 +14,10 @@ var {Object} I{Object}Server = &{Object}Server{
 	},
 }
 
-type I{Object}Server interface {
+type I{Object}Service interface {
 	common.IService
 }
 
-type {Object}Server struct {
+type {Object}Service struct {
 	common.Service
 }
