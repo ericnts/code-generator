@@ -9,6 +9,6 @@ type {Object} struct {
 {Field}
 }
 
-func (p *{Object}) TableName() string {
+func (*{Object}) TableName() string {
     return "{Table}"
 }

@@ -190,7 +190,7 @@ func (p *Generator) GenerateController() error {
 	if len(items) > 0 {
 		items[len(items)-1] = stringx.Plural(items[len(items)-1])
 	}
-	str = strings.ReplaceAll(str, constant.Router, path.Base(constant.ControllerDir)+"/"+strings.Join(items, "/"))
+	str = strings.ReplaceAll(str, constant.Router, "/"+path.Base(constant.ControllerDir)+"/"+strings.Join(items, "/"))
 	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.ControllerDir, p.fileName, path.Base(constant.ControllerDir)), []byte(str), 0644)
 	return err
 }
