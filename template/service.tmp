@@ -6,16 +6,16 @@ import (
 	"{Project}/vo"
 )
 
-var {Object} {Object}ServerInter = new{Object}Service()
-
-func new{Object}Service() *{Object}Server {
-	{LowerObject}Service := new({Object}Server)
-	{LowerObject}Service.Register(dao.{Object}, new(vo.{Object}VO), new(vo.{Object}ListVO))
-	return {LowerObject}Service
+var {Object} I{Object}Server = &{Object}Server{
+	Service: common.Service{
+		DAO:    dao.{Object},
+        DetailVO: new(vo.{Object}Detail),
+        VO:       new(vo.{Object}),
+	},
 }
 
-type {Object}ServerInter interface {
-	common.ServiceInter
+type I{Object}Server interface {
+	common.IService
 }
 
 type {Object}Server struct {

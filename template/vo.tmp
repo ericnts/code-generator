@@ -5,17 +5,17 @@ import (
 	"{Project}/entity"{Import}
 )
 
-type {Object}QueryVO struct {
+type {Object}Query struct {
 	common.Query
 
 {Field}
 }
 
-type {Object}ListVO struct {
+type {Object} struct {
 {Field}
 }
 
-func (v *{Object}ListVO) Load(inter common.EntityInter) {
+func (v *{Object}) Load(inter common.EntityInter) {
 	e, ok := inter.(*entity.{Object})
 	if !ok {
 		return
@@ -23,24 +23,24 @@ func (v *{Object}ListVO) Load(inter common.EntityInter) {
 {ToVO}
 }
 
-type {Object}VO struct {
-	{Object}ListVO
+type {Object}Detail struct {
+	{Object}
 }
 
-func (v *{Object}VO) Load(inter common.EntityInter) {
+func (v *{Object}Detail) Load(inter common.EntityInter) {
 	e, ok := inter.(*entity.{Object})
 	if !ok {
 		return
 	}
-	v.{Object}ListVO = {Object}ListVO{}
-	v.{Object}ListVO.Load(e)
+	v.{Object}List = {Object}List{}
+	v.{Object}List.Load(e)
 }
 
-type {Object}ModifyVO struct {
+type {Object}Modify struct {
 {Field}
 }
 
-func (p *{Object}ModifyVO) ToEntity(id string) common.EntityInter {
+func (p *{Object}Modify) ToEntity(id string) common.EntityInter {
 	return &entity.{Object}{
 		Entity: common.Entity{
 			ID: id,
@@ -49,10 +49,10 @@ func (p *{Object}ModifyVO) ToEntity(id string) common.EntityInter {
 	}
 }
 
-type {Object}CreateVO struct {
-	{Object}ModifyVO
+type {Object}Create struct {
+	{Object}Modify
 }
 
-func (p *{Object}CreateVO) ToEntity() common.EntityInter {
-	return p.{Object}ModifyVO.ToEntity("")
+func (p *{Object}Create) ToEntity() common.EntityInter {
+	return p.{Object}Modify.ToEntity("")
 }

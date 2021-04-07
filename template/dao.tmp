@@ -5,16 +5,14 @@ import (
 	"{Project}/entity"
 )
 
-var {Object} {Object}DAOInter = new{Object}Dao()
-
-func new{Object}Dao() *{Object}DAO {
-	{LowerObject}DAO := new({Object}DAO)
-	{LowerObject}DAO.Register(new(entity.{Object}))
-	return {LowerObject}DAO
+var {Object} I{Object}DAO = &{Object}DAO{
+	DAO: common.DAO{
+		Model: new(entity.{Object}),
+	},
 }
 
-type {Object}DAOInter interface {
-	common.DAOInter
+type I{Object}DAO interface {
+	common.IDAO
 }
 
 type {Object}DAO struct {

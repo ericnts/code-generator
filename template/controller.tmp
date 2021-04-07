@@ -12,15 +12,15 @@ import (
 // @Summary 查询{Comment}列表
 // @Description 查询{Comment}接口
 // @Security ApiKeyAuth
-// @Param param query vo.{Object}QueryVO false "查询参数"
-// @Success 200 {object} common.Result{data=common.CollectionResult{list=vo.{Object}ListVO}}
+// @Param param query vo.{Object}Query false "查询参数"
+// @Success 200 {object} common.Result{data=common.CollectionResult{list=vo.{Object}}}
 // @Router {Router} [get]
 func Find{Object}(c *gin.Context) {
-	var queryVO vo.{Object}QueryVO
-	if err := c.Bind(&queryVO); err != nil {
+	var query vo.{Object}Query
+	if err := c.Bind(&query); err != nil {
 		return
 	}
-	if result, err := service.{Object}.Find(c, &queryVO); err != nil {
+	if result, err := service.{Object}.Find(c, &query); err != nil {
 		common.Err(c, err)
 	} else {
 		common.Success(c, result)
@@ -32,7 +32,7 @@ func Find{Object}(c *gin.Context) {
 // @Description 查询单个{Comment}详细新信息
 // @Security ApiKeyAuth
 // @Param id path string true "{Object}ID"
-// @Success 200 {object} common.Result{data=vo.{Object}VO}
+// @Success 200 {object} common.Result{data=vo.{Object}Detail}
 // @Router {Router}/{id} [get]
 func Get{Object}(c *gin.Context) {
 	id := c.Param("id")
@@ -40,10 +40,10 @@ func Get{Object}(c *gin.Context) {
 		common.Err(c, common.IDBlankErr)
 		return
 	}
-	if result, err := service.{Object}.GetByID(c, id); err != nil {
+	if detail, err := service.{Object}.GetByID(c, id); err != nil {
 		common.Err(c, err)
 	} else {
-		common.Success(c, result)
+		common.Success(c, detail)
 	}
 }
 
@@ -51,15 +51,15 @@ func Get{Object}(c *gin.Context) {
 // @Summary 添加{Comment}
 // @Description 添加{Comment}
 // @Security ApiKeyAuth
-// @Param param body vo.{Object}CreateVO true "{Comment}信息"
+// @Param param body vo.{Object}Create true "{Comment}信息"
 // @Success 200 {object} common.Result{data=string}
 // @Router {Router} [post]
 func Post{Object}(c *gin.Context) {
-	var createVO vo.{Object}CreateVO
-	if err := c.Bind(&createVO); err != nil {
+	var create vo.{Object}Create
+	if err := c.Bind(&create); err != nil {
 		return
 	}
-	if id, err := service.{Object}.Create(c, &createVO); err != nil {
+	if id, err := service.{Object}.Create(c, &create); err != nil {
 		common.Err(c, err)
 	} else {
 		common.Success(c, id)
@@ -71,7 +71,7 @@ func Post{Object}(c *gin.Context) {
 // @Description 修改{Comment}，根据ID判断
 // @Security ApiKeyAuth
 // @Param id path string true "{Object}ID"
-// @Param param body vo.{Object}ModifyVO false "{Comment}信息"
+// @Param param body vo.{Object}Modify false "{Comment}信息"
 // @Success 200 {object} common.Result{data=int64}
 // @Router {Router}/{id} [put]
 func Put{Object}(c *gin.Context) {
@@ -80,11 +80,11 @@ func Put{Object}(c *gin.Context) {
 		common.Err(c, common.IDBlankErr)
 		return
 	}
-	var modifyVO vo.{Object}ModifyVO
-	if err := c.Bind(&modifyVO); err != nil {
+	var modify vo.{Object}Modify
+	if err := c.Bind(&modify); err != nil {
 		return
 	}
-	if count, err := service.{Object}.Modify(c, id, &modifyVO); err != nil {
+	if count, err := service.{Object}.Modify(c, id, &modify); err != nil {
 		common.Err(c, err)
 	} else {
 		common.Success(c, count)
