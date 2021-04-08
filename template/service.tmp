@@ -9,9 +9,9 @@ import (
 var {Object} I{Object}Service = &{Object}Service{
 	Service: common.Service{
 		DAO:    dao.{Object},
-        DetailVO: new(vo.{Object}Detail),
         VO:       new(vo.{Object}),
-	},
+	    DetailVO: new(vo.{Object}Detail),
+    },
 }
 
 type I{Object}Service interface {
