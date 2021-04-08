@@ -16,7 +16,7 @@ type {Object} struct {
 }
 
 func (v *{Object}) Load(inter common.EntityInter) {
-	e, ok := inter.(entity.{Object})
+	e, ok := inter.(*entity.{Object})
 	if !ok {
 		return
 	}
@@ -28,7 +28,7 @@ type {Object}Detail struct {
 }
 
 func (v *{Object}Detail) Load(inter common.EntityInter) {
-	e, ok := inter.(entity.{Object})
+	e, ok := inter.(*entity.{Object})
 	if !ok {
 		return
 	}
