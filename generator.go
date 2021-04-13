@@ -120,11 +120,9 @@ func (p *Generator) GenerateVO() error {
 		if fieldType == constant.FTTime {
 			hasTime = true
 		}
-		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
-		if !p.record.IsCommonField(i) {
-			toVOs[i] = fmt.Sprintf("\tv.%s = e.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
-			toEntities[i] = fmt.Sprintf("\t\t%s:\t\t\tp.%s,\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
-		}
+		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
+		toVOs[i] = fmt.Sprintf("\tv.%s = e.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
+		toEntities[i] = fmt.Sprintf("\t\t%s:\t\t\tp.%s,\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
 	}
 	if hasTime {
 		importStr += "\n\t\"time\""

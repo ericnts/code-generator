@@ -15,7 +15,7 @@ type {Object} struct {
 {Field}
 }
 
-func (v *{Object}) Load(inter common.EntityInter) {
+func (v *{Object}) Load(inter common.IEntity) {
 	e, ok := inter.(*entity.{Object})
 	if !ok {
 		return
@@ -27,20 +27,20 @@ type {Object}Detail struct {
 	{Object}
 }
 
-func (v *{Object}Detail) Load(inter common.EntityInter) {
+func (v *{Object}Detail) Load(inter common.IEntity) {
 	e, ok := inter.(*entity.{Object})
 	if !ok {
 		return
 	}
-	v.{Object}List = {Object}List{}
-	v.{Object}List.Load(e)
+	v.{Object} = {Object}{}
+	v.{Object}.Load(e)
 }
 
 type {Object}Modify struct {
 {Field}
 }
 
-func (p *{Object}Modify) ToEntity(id string) common.EntityInter {
+func (p *{Object}Modify) ToEntity(id string) common.IEntity {
 	return &entity.{Object}{
 		Entity: common.Entity{
 			ID: id,
@@ -53,6 +53,8 @@ type {Object}Create struct {
 	{Object}Modify
 }
 
-func (p *{Object}Create) ToEntity() common.EntityInter {
-	return p.{Object}Modify.ToEntity("")
+func (p *{Object}Create) ToEntity() common.IEntity {
+    e := p.{Object}Modify.ToEntity("")
+	c := e.(*entity.{Object})
+	return c
 }
