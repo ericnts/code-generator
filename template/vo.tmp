@@ -16,10 +16,7 @@ type {Object} struct {
 }
 
 func (v *{Object}) Load(inter common.IEntity) {
-	e, ok := inter.(*entity.{Object})
-	if !ok {
-		return
-	}
+	e := inter.(*entity.{Object})
 {ToVO}
 }
 
@@ -28,11 +25,7 @@ type {Object}Detail struct {
 }
 
 func (v *{Object}Detail) Load(inter common.IEntity) {
-	e, ok := inter.(*entity.{Object})
-	if !ok {
-		return
-	}
-	v.{Object} = {Object}{}
+	e := inter.(*entity.{Object})
 	v.{Object}.Load(e)
 }
 
