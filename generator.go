@@ -125,8 +125,8 @@ func (p *Generator) GenerateVO() error {
 		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), column.Comment)
 		toVOs[i] = fmt.Sprintf("\tv.%s = e.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
 		if !p.record.IsCommonField(i) {
-			modifyFields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), column.Comment)
-			queryFields[i] = fmt.Sprintf("\t%s\t\t%v\t`form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
+			modifyFields[i] = fmt.Sprintf("\t%s\t\t%v\t//%s\n", stringx.CamelName(column.Name), fieldType, column.Comment)
+			queryFields[i] = fmt.Sprintf("\t%s\t\t%v\t`form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), column.Comment)
 			toEntities[i] = fmt.Sprintf("\te.%s = p.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
 		}
 	}
