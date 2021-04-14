@@ -13,7 +13,7 @@ import (
 // @Description 查询{Comment}接口
 // @Security ApiKeyAuth
 // @Param param query vo.{Object}Query false "查询参数"
-// @Success 200 {object} common.Result{data=common.CollectionResult{list=vo.{Object}}}
+// @Success 200 {object} common.Result{data=common.CollectionResult{list=[]vo.{Object}}}
 // @Router {Router} [get]
 func Find{Object}(c *gin.Context) {
 	var query vo.{Object}Query
