@@ -112,6 +112,7 @@ func (p *Generator) GenerateEntity() error {
 func (p *Generator) GenerateVO() error {
 	var importStr string
 	fields := make([]string, p.columnSize)
+	queryFields := make([]string, p.columnSize)
 	modifyFields := make([]string, p.columnSize)
 	toVOs := make([]string, p.columnSize)
 	toEntities := make([]string, p.columnSize)
@@ -121,10 +122,11 @@ func (p *Generator) GenerateVO() error {
 		if fieldType == constant.FTTime {
 			hasTime = true
 		}
-		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
+		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), column.Comment)
 		toVOs[i] = fmt.Sprintf("\tv.%s = e.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
 		if !p.record.IsCommonField(i) {
-			modifyFields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
+			modifyFields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), column.Comment)
+			queryFields[i] = fmt.Sprintf("\t%s\t\t%v\t`form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
 			toEntities[i] = fmt.Sprintf("\te.%s = p.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
 		}
 	}
@@ -141,6 +143,7 @@ func (p *Generator) GenerateVO() error {
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.Field, strings.Join(fields, ""))
+	str = strings.ReplaceAll(str, constant.QueryField, strings.Join(queryFields, ""))
 	str = strings.ReplaceAll(str, constant.ModifyField, strings.Join(modifyFields, ""))
 	str = strings.ReplaceAll(str, constant.ToVO, strings.Join(toVOs, ""))
 	str = strings.ReplaceAll(str, constant.ToEntity, strings.Join(toEntities, ""))

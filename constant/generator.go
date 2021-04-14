@@ -25,6 +25,7 @@ const (
 	Comment     = "{Comment}"
 	Object      = "{Object}"
 	Field       = "{Field}"
+	QueryField = "{QueryField}"
 	ModifyField = "{ModifyField}"
 	Table       = "{Table}"
 	ToVO        = "{ToVO}"
