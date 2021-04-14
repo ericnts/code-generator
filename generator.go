@@ -112,6 +112,7 @@ func (p *Generator) GenerateEntity() error {
 func (p *Generator) GenerateVO() error {
 	var importStr string
 	fields := make([]string, p.columnSize)
+	modifyFields := make([]string, p.columnSize)
 	toVOs := make([]string, p.columnSize)
 	toEntities := make([]string, p.columnSize)
 	var hasTime bool
@@ -122,7 +123,10 @@ func (p *Generator) GenerateVO() error {
 		}
 		fields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
 		toVOs[i] = fmt.Sprintf("\tv.%s = e.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
-		toEntities[i] = fmt.Sprintf("\t\t%s:\t\t\tp.%s,\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
+		if !p.record.IsCommonField(i) {
+			modifyFields[i] = fmt.Sprintf("\t%s\t\t%v\t`json:\"%s,omitempty\" form:\"%s\"`\t//%s\n", stringx.CamelName(column.Name), fieldType, stringx.LowerCamelName(column.Name), stringx.LowerCamelName(column.Name), column.Comment)
+			toEntities[i] = fmt.Sprintf("\te.%s = p.%s\n", stringx.CamelName(column.Name), stringx.CamelName(column.Name))
+		}
 	}
 	if hasTime {
 		importStr += "\n\t\"time\""
@@ -137,6 +141,7 @@ func (p *Generator) GenerateVO() error {
 	str = strings.ReplaceAll(str, constant.Project, p.Project)
 	str = strings.ReplaceAll(str, constant.Object, p.ObjectName)
 	str = strings.ReplaceAll(str, constant.Field, strings.Join(fields, ""))
+	str = strings.ReplaceAll(str, constant.ModifyField, strings.Join(modifyFields, ""))
 	str = strings.ReplaceAll(str, constant.ToVO, strings.Join(toVOs, ""))
 	str = strings.ReplaceAll(str, constant.ToEntity, strings.Join(toEntities, ""))
 	err = ioutil.WriteFile(fmt.Sprintf("%s/%s/%s_%s.go", constant.DistDir, constant.VODir, p.fileName, path.Base(constant.VODir)), []byte(str), 0644)

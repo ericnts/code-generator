@@ -30,16 +30,12 @@ func (v *{Object}Detail) Load(inter common.IEntity) {
 }
 
 type {Object}Modify struct {
-{Field}
+{ModifyField}
 }
 
-func (p *{Object}Modify) ToEntity(id string) common.IEntity {
-	return &entity.{Object}{
-		Entity: common.Entity{
-			ID: id,
-		},
+func (p *{Object}Modify) Decorate(i common.IEntity)  {
+    e := i.(*entity.{Object})
 {ToEntity}
-	}
 }
 
 type {Object}Create struct {
@@ -47,7 +43,7 @@ type {Object}Create struct {
 }
 
 func (p *{Object}Create) ToEntity() common.IEntity {
-    e := p.{Object}Modify.ToEntity("")
-	c := e.(*entity.{Object})
-	return c
+    e := new(entity.{Object})
+    p.{Object}Modify.Decorate(e)
+	return e
 }

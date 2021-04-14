@@ -25,6 +25,7 @@ const (
 	Comment     = "{Comment}"
 	Object      = "{Object}"
 	Field       = "{Field}"
+	ModifyField = "{ModifyField}"
 	Table       = "{Table}"
 	ToVO        = "{ToVO}"
 	ToEntity    = "{ToEntity}"
