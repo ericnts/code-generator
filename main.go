@@ -9,7 +9,7 @@ func main() {
 		log.Error(err)
 		return
 	}
-	generate("epshealth-airobot-admin", "robot_position")
+	generate("epshealth-airobot-admin", "device_lift_floor")
 }
 
 func generate(project, table string) {

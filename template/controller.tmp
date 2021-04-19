@@ -35,12 +35,7 @@ func Find{Object}(c *gin.Context) {
 // @Success 200 {object} common.Result{data=vo.{Object}Detail}
 // @Router {Router}/{id} [get]
 func Get{Object}(c *gin.Context) {
-	id := c.Param("id")
-	if len(strings.TrimSpace(id))==0 {
-		common.Err(c, common.IDBlankErr)
-		return
-	}
-	if detail, err := service.{Object}.GetByID(c, id); err != nil {
+	if detail, err := service.{Object}.GetByID(c, common.ID(c)); err != nil {
 		common.Err(c, err)
 	} else {
 		common.Success(c, detail)
@@ -75,16 +70,11 @@ func Post{Object}(c *gin.Context) {
 // @Success 200 {object} common.Result{data=int64}
 // @Router {Router}/{id} [put]
 func Put{Object}(c *gin.Context) {
-	id := c.Param("id")
-	if len(strings.TrimSpace(id))==0 {
-		common.Err(c, common.IDBlankErr)
-		return
-	}
 	var modify vo.{Object}Modify
 	if err := c.Bind(&modify); err != nil {
 		return
 	}
-	if count, err := service.{Object}.Modify(c, id, &modify); err != nil {
+	if count, err := service.{Object}.Modify(c, common.ID(c), &modify); err != nil {
 		common.Err(c, err)
 	} else {
 		common.Success(c, count)
@@ -118,12 +108,7 @@ func Del{Object}Batch(c *gin.Context) {
 // @Success 200 {object} common.Result{data=int64}
 // @Router {Router}/{id} [delete]
 func Del{Object}(c *gin.Context) {
-	id := c.Param("id")
-	if len(strings.TrimSpace(id))==0 {
-		common.Err(c, common.IDBlankErr)
-		return
-	}
-	if count, err := service.{Object}.DelByID(c, id); err != nil {
+	if count, err := service.{Object}.DelByID(c, common.ID(c)); err != nil {
 		common.Err(c, err)
 	} else {
 		common.Success(c, count)
