@@ -6,10 +6,10 @@ import (
 
 // {Comment}路由
 func Init{Object}(router *gin.RouterGroup) {
-    router.GET("", permission("{Permission}:view"), v1.Find{Object})
-    router.GET(":id", permission("{Permission}:view"), v1.Get{Object})
-    router.POST("", permission("{Permission}:edit"), v1.Post{Object})
-    router.PUT(":id", permission("{Permission}:edit"), v1.Put{Object})
-    router.DELETE("", permission("{Permission}:delete"), v1.Del{Object}Batch)
-    router.DELETE(":id", permission("{Permission}:delete"), v1.Del{Object})
+    router.GET("", v1.Find{Object})
+    router.GET(":id", v1.Get{Object})
+    router.POST("", v1.Post{Object})
+    router.PUT(":id", v1.Put{Object})
+    router.DELETE("", v1.Del{Object}Batch)
+    router.DELETE(":id", v1.Del{Object})
 }
