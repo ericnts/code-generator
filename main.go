@@ -9,15 +9,18 @@ func main() {
 		log.Error(err)
 		return
 	}
-	generate("epshealth-airobot-admin", "device_robot_position_config")
-}
 
-func generate(project, table string) {
-	generator, err := NewGenerator(project, table)
+	generator, err := NewGenerator("epshealth-airobot-admin", "sys_log")
 	if err != nil {
 		log.Error(err)
 		return
 	}
+	//generator.ObjectName = "Proxy"
+	//generator.fileName = "proxy"
+	generate(generator)
+}
+
+func generate(generator *Generator) {
 	if err := generator.GenerateEntity(); err != nil {
 		log.Error(err)
 	}
