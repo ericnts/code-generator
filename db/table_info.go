@@ -26,7 +26,7 @@ func (p *ColumnInfo) GetType() constant.FieldType {
 	case constant.CTChar, constant.CTVarchar, constant.CTTinyblob, constant.CTTinytext, constant.CTBlob,
 		constant.CTText, constant.CTMediumblob, constant.CTMediumtext, constant.CTLongblob, constant.CTLongtext:
 		return constant.FTString
-	case constant.CTTinyint, constant.CTSmallint, constant.CTMediumint, constant.CTInt, constant.CTInteger:
+	case constant.CTTinyint, constant.CTSmallint, constant.CTMediumint, constant.CTInt, constant.CTInteger, constant.CTDecimal:
 		return constant.FTInt
 	case constant.CTBigint:
 		return constant.FTInt64

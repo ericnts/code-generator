@@ -10,13 +10,13 @@ func main() {
 		return
 	}
 
-	generator, err := NewGenerator("epshealth-airobot-admin", "sys_log")
+	generator, err := NewGenerator("epshealth-airobot-admin", "sys_role")
 	if err != nil {
 		log.Error(err)
 		return
 	}
-	//generator.ObjectName = "Proxy"
-	//generator.fileName = "proxy"
+	//generator.ObjectName = "VOIP"
+	//generator.fileName = "voip"
 	generate(generator)
 }
 

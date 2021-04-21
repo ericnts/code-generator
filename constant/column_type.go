@@ -18,12 +18,13 @@ const (
 	CTMediumint  ColumnType = "mediumint"  //3 bytes                大整数值
 	CTInt        ColumnType = "int"        //4 bytes                大整数值
 	CTInteger    ColumnType = "integer"    //4 bytes                大整数值
-	CTBigint     ColumnType = "bigint"     //8 bytes                极大整数值
-	CTFloat      ColumnType = "float"      //4 bytes                单精度 浮点数值
-	CTDouble     ColumnType = "double"     //8 bytes                双精度 浮点数值
-	CTDate       ColumnType = "date"       //YYYY-MM-DD	            日期值
-	CTTime       ColumnType = "time"       //HH:MM:SS	            时间值或持续时间
-	CTYear       ColumnType = "year"       //YYYY	 				年份值
-	CTDatetime   ColumnType = "datetime"   //YYYY-MM-DD HH:MM:SS	混合日期和时间值
-	CTTimestamp  ColumnType = "timestamp"  //YYYYMMDD HHMMSS		混合日期和时间值，时间戳
+	CTDecimal    ColumnType = "decimal"
+	CTBigint     ColumnType = "bigint"    //8 bytes                极大整数值
+	CTFloat      ColumnType = "float"     //4 bytes                单精度 浮点数值
+	CTDouble     ColumnType = "double"    //8 bytes                双精度 浮点数值
+	CTDate       ColumnType = "date"      //YYYY-MM-DD	            日期值
+	CTTime       ColumnType = "time"      //HH:MM:SS	            时间值或持续时间
+	CTYear       ColumnType = "year"      //YYYY	 				年份值
+	CTDatetime   ColumnType = "datetime"  //YYYY-MM-DD HH:MM:SS	混合日期和时间值
+	CTTimestamp  ColumnType = "timestamp" //YYYYMMDD HHMMSS		混合日期和时间值，时间戳
 )
